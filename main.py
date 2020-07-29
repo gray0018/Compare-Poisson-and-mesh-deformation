@@ -3,6 +3,9 @@ import argparse
 import numpy as np
 import matplotlib.pyplot as plt
 
+import matplotlib.colors as colors
+from matplotlib.cm import ScalarMappable
+
 def substract_offset(d):
     return d-np.nanmean(d)
 
@@ -24,22 +27,30 @@ if __name__ == '__main__':
     est_m = substract_offset(est_m)
     error_map_p = np.abs(gt-est_p)
     error_map_m = np.abs(gt-est_m)
- 
-    # fig, axes = plt.subplots(figsize=(4.5,4.5))
-    # axes.imshow(error_map)
-    # axes.set_title('Error Map')
-    # 
-    # axes.set_xticks([]), axes.set_yticks([]) # x, y ticks off
 
-    # plt.show()
-    
+    vmin = min(np.nanmin(error_map_p), np.nanmin(error_map_m))
+    vmax = max(np.nanmax(error_map_p), np.nanmax(error_map_m))
+ 
     fig, axes = plt.subplots(nrows=1, ncols=2,figsize=(10,4.5))
-    axes[0].imshow(error_map_p)
+    axes[0].imshow(error_map_p, vmin=vmin, vmax=vmax)
     axes[0].set_xticks([]), axes[0].set_yticks([]), axes[0].set_title("Poisson Error Map")
     axes[0].set_xlabel('MAE:{:0.2f}'.format(np.nanmean(error_map_p)))
     
-    axes[1].imshow(error_map_m)
+    axes[1].imshow(error_map_m, vmin=vmin, vmax=vmax)
     axes[1].set_xticks([]), axes[1].set_yticks([]), axes[1].set_title("Mesh Deformation Error Map")
     axes[1].set_xlabel('MAE:{:0.2f}'.format(np.nanmean(error_map_m)))
+
+
+    #カラーバーの設定
+    axpos = axes[1].get_position()
+    cbar_ax = fig.add_axes([0.87, axpos.y0, 0.02, axpos.height])
+    norm = colors.Normalize(vmin=vmin,vmax=vmax)
+    mappable = ScalarMappable(norm=norm)
+    mappable._A = []
+    fig.colorbar(mappable, cax=cbar_ax)
+
+    #余白の調整
+    plt.subplots_adjust(right=0.85)
+    plt.subplots_adjust(wspace=0.1)
 
     plt.show()
