@@ -23,7 +23,7 @@ if __name__ == '__main__':
     n = np.load("{0}/make_{0}/{0}_normal.npy".format(args.obj_name))
     d = np.load("{0}/make_{0}/{0}_depth.npy".format(args.obj_name))
 
-    mask = d>-1000
+    mask = d>-9000
     for i in range(args.erode):
         mask = erode_mask(mask)
 
@@ -43,5 +43,5 @@ if __name__ == '__main__':
 
     plt.show()
 
-    np.save("{0}_depth.npy".format(args.obj_name), d)
+    np.save("{0}_gt_depth.npy".format(args.obj_name), d)
     np.save("{0}_normal.npy".format(args.obj_name), n)

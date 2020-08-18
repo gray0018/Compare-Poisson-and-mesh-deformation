@@ -11,15 +11,13 @@ def substract_offset(d):
 
 # command line parser
 parser = argparse.ArgumentParser(description='Compare normal integration result by solving Poisson Equation and mesh deformation')
-parser.add_argument('gt', help='the path of ground truth normal map')
-parser.add_argument('est_p', help='the path of Poisson normal map')
-parser.add_argument('est_m', help='the path of mesh deformation normal map')
+parser.add_argument('model', help='the name of model')
 
 if __name__ == '__main__':
     args = parser.parse_args()
-    gt = np.load(args.gt) # ground truth depth
-    est_p = np.load(args.est_p) # estimated depth by poisson
-    est_m = np.load(args.est_m) # estimated depth by mesh deformation
+    gt = np.load(args.model+'/'+args.model+'_gt_depth.npy') # ground truth depth
+    est_p = np.load(args.model+'/'+args.model+'_p_depth.npy') # estimated depth by poisson
+    est_m = np.load(args.model+'/'+args.model+'_m_depth.npy') # estimated depth by mesh deformation
     plt.style.use(['science','no-latex'])
 
     gt = substract_offset(gt)

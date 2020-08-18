@@ -1,0 +1,43 @@
+<?xml version="1.0" ?>
+<scene version="0.5.0">
+
+	<integrator type="multichannel">
+		<integrator type="field">
+			<string name="field" value="shNormal"/>
+		</integrator>
+		<integrator type="field">
+			<string name="field" value="position"/>
+			<spectrum name="undefined" value="-100000.0"/>
+		</integrator>
+	</integrator>
+
+	<shape type="obj">
+		<string name="filename" value="bust.obj"/>
+		<bsdf type="diffuse"/>
+		<transform name="toWorld">
+			<translate x="1" y="0.5" z="0"/>
+			<rotate x="1" angle="180"/>
+			<scale value="200"/>
+		</transform>
+	</shape>
+
+	<sensor type="orthographic">
+		<transform name="toWorld">
+			<scale x="800" y="800"/>
+			<lookat origin="0, 0, 2000" target="0, 0, 0" up="0, 1, 0"/>
+		</transform>
+		<sampler type="ldsampler">
+			<integer name="sampleCount" value="1024"/>
+		</sampler>
+
+		<film type="hdrfilm">
+			<integer name="width" value="1600"/>
+			<integer name="height" value="1600"/>
+			<boolean name="highQualityEdges" value="true"/>
+            <string name="pixelFormat" value="rgb,rgb"/>
+            <string name="channelNames" value="normal,position"/>
+			<string name="componentFormat" value="float32"/>
+		</film>
+	</sensor>
+
+</scene>
